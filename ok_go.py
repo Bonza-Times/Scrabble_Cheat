@@ -1,5 +1,8 @@
 
 def read_file():
+    '''
+    Open Scrabble word file and read lines
+    '''
     # Read Scrabble word file
     scrabble_words = "/home/tyler/workspace/Scrabble_Cheat/sowpods.txt"
     # Assign word file to a variable
@@ -9,7 +12,11 @@ def read_file():
     return word_list
 
 def remove_empty():
-# Strip empty space from word list
+    '''
+    Strip empty space from Scrabble word file and
+    create list with words
+    '''
+    # Strip empty space from word list
     new_list = []
     for word in read_file():
         new = word.strip()
@@ -17,6 +24,10 @@ def remove_empty():
     return new_list
     
 def rack_input():
+    '''
+    Get user input for scrabble rack. Check rack to make
+    sure that it has enough letters.
+    '''
     # Input rack to Scrabble Cheater
     scrabble_rack = raw_input("Enter your scrabble rack (ex. RSTLNEI):")
     # Make sure rack isn't more than seven letters
@@ -27,17 +38,25 @@ def rack_input():
 
 # track if word matches rack
 def test_word(word, rack):
+    '''
+    Check each letter in scrabble rack against each 
+    scrabble word to see which words could be created
+    while assuming all letters are on the board.
+    '''
     rack2 = list(rack)
     for letter in word:
         if letter in rack2:
             rack2.remove(letter)
         else:
-            
             return False
     return True
 
-# if there is at least 2 matches print it out
+# if there is any matches print it out
 def test_rack(all_words,rack):
+    '''
+    If test_word is True then append the word
+    to test_list.
+    '''
     test_list = []      
     for word in all_words:
         if test_word(word, rack):
@@ -46,6 +65,11 @@ def test_rack(all_words,rack):
             
 # calculate scores
 def calc_scores(valid_words):
+    '''
+    Calculate scrabble scores for each possible word in test_list.
+    Assign each word in test_list as a key in a dictionary. Value
+    is the sum of scores attributed to the letters.
+    '''
     # Scrabble value dictionary
     scores = {"a": 1, "c": 3, "b": 3, "e": 1, "d": 2, "g": 2,
               "f": 4, "i": 1, "h": 4, "k": 5, "j": 8, "m": 3,
@@ -60,11 +84,15 @@ def calc_scores(valid_words):
             score += scores[letter]
         top_scores[word_str] = score
         score = 0
+    top_scores = sorted(top_scores.items(), key=lambda x: x[1], reverse = True)     
     # sort dictionary highest to lowest
     return top_scores
     
 # call main function
 def main():
+    '''
+    Main function
+    '''
     rack = rack_input()
     all_words = remove_empty()
     valid_words = test_rack(all_words, rack)
